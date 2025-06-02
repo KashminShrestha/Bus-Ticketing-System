@@ -37,7 +37,49 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #third party apps
+    'rest_framework',
+    'djoser',
+    'rest_framework.authtoken',
+    
+    #local apps
+    'bookings.apps.BookingsConfig',
+    'users.apps.UsersConfig',
+    'payments.apps.PaymentsConfig',
+    'notifications.apps.NotificationsConfig',
+    'reviews.apps.ReviewsConfig',
+    
 ]
+# Custom user model
+AUTH_USER_MODEL = 'users.User'
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# SimpleJWT Settings (optional customization)
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# Djoser settings
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_ID_FIELD': 'id',
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserCreateSerializer',
+        'user': 'users.serializers.UserSerializer',
+    },
+    'TOKEN_MODEL': None,  # disable token model for JWT
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
